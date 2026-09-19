@@ -70,6 +70,34 @@ npm run dev
 Open <http://localhost:5173> and sign in with the `SEED_ADMIN_EMAIL` /
 `SEED_PASSWORD` you set in `backend/.env`.
 
+### Accounts and credentials
+
+`seed.py` creates two accounts, and both sign in with the same password:
+
+| Account | Email | What it reaches |
+| --- | --- | --- |
+| Admin | `SEED_ADMIN_EMAIL` | The whole admin panel |
+| Client | `SEED_CLIENT_EMAIL` | Only the projects assigned to that user |
+
+No default pair is shipped in the code. All three values come from
+`backend/.env`, and `seed_all.py` stops with an error while any of them is
+empty, so a fresh checkout has no login anyone could guess:
+
+```bash
+SEED_ADMIN_EMAIL=admin@example.com
+SEED_CLIENT_EMAIL=client@example.com
+SEED_PASSWORD=the-password-you-choose
+SEED_ADMIN_COUNTRY=CN
+SEED_CLIENT_COUNTRY=CN
+```
+
+To change the password afterwards, edit the user in **Admin -> Users**;
+re-running the seeder leaves an account that already exists untouched.
+
+> `SEED_PASSWORD` is one secret shared by both accounts, and it is the pair an
+> attacker tries first. Change it before the install is reachable from anywhere
+> but your own machine.
+
 `seed_all.py` creates the tables, the country list, the admin and client
 accounts, the general tools and skills, and the System project with its Project
 Manager agent. Every step is idempotent, so running it again is safe.
