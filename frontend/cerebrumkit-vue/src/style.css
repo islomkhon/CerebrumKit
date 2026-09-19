@@ -1,0 +1,84 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/*
+ * Design tokens shared with the CerebrumKit panel so both applications speak
+ * the same visual language: an indigo/violet primary, a lavender page plane,
+ * a deep purple sidebar rail and one easing curve for every rail transition.
+ */
+:root {
+  --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --background: hsl(258 28% 89%);
+  --foreground: hsl(258 32% 13%);
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(258 32% 13%);
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(258 32% 13%);
+  --primary: hsl(264 82% 56%);
+  --primary-accent: hsl(288 80% 58%);
+  --primary-foreground: hsl(0 0% 100%);
+  --secondary: hsl(262 45% 95%);
+  --secondary-foreground: hsl(264 45% 36%);
+  --muted: hsl(258 35% 96%);
+  --muted-foreground: hsl(258 12% 45%);
+  --accent: hsl(266 50% 95%);
+  --accent-foreground: hsl(266 50% 38%);
+  --destructive: hsl(348 90% 55%);
+  --border: hsl(262 22% 83%);
+  --input: hsl(262 24% 80%);
+  --ring: hsl(276 80% 62%);
+
+  --sidebar-background: hsl(260 30% 18%);
+  --sidebar-foreground: hsl(258 22% 90%);
+  --sidebar-primary: hsl(288 90% 76%);
+  --sidebar-primary-foreground: hsl(260 40% 12%);
+  --sidebar-accent: hsl(262 32% 29%);
+  --sidebar-accent-foreground: hsl(288 100% 94%);
+  --sidebar-border: hsl(262 26% 29%);
+  --sidebar-ring: hsl(288 95% 78%);
+
+  /*
+   * The brand tile is deliberately a darker violet than the nav's active pill,
+   * which paints itself in --sidebar-primary. Sharing that token made the logo
+   * read as a second selected menu item.
+   */
+  --sidebar-brand: hsl(266 58% 38%);
+  --sidebar-brand-foreground: hsl(288 100% 92%);
+
+  --radius: 0.5rem;
+  --ease-sidebar: cubic-bezier(0.32, 0.72, 0, 1);
+
+  /* Rail metrics: 10rem expanded, 3rem of icon plus the shell gutter collapsed. */
+  --sidebar-width: 10rem;
+  --sidebar-width-icon: 3rem;
+  --sidebar-gutter: 0.5rem;
+
+  /* One rhythm for every stacked rail control. The brand-to-nav boundary reuses
+     it so the logo lines up with the menu items instead of floating above them. */
+  --sidebar-item-gap: 0.25rem;
+
+  /*
+   * Height of the content card. Full-height pages (projects, storage) size
+   * themselves against this instead of hard-coding the old top bar offset.
+   */
+  --shell-content-height: calc(100vh - 2 * var(--sidebar-gutter));
+}
+
+@media (max-width: 767px) {
+  :root {
+    /* The mobile app bar only exists below the md breakpoint. */
+    --shell-content-height: calc(100vh - 2 * var(--sidebar-gutter) - 4rem);
+  }
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+}

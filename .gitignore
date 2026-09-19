@@ -1,0 +1,16 @@
+node_modules/
+dist/
+__pycache__/
+*.pyc
+*.egg-info/
+env/
+venv/
+.venv/
+*.db
+*.db-journal
+.env
+
+# Logs
+*.log
+*.err
+.runlogs/
