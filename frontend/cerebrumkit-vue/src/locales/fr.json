@@ -182,6 +182,7 @@
       "new": "+ Nouveau",
       "search": "Rechercher des chats...",
       "no_chats": "Aucun chat",
+      "no_chats_hint": "Cliquez sur + Nouveau pour démarrer une conversation.",
       "no_description": "(aucune description)",
       "new_messages": "nouveaux",
       "create_title": "Créer un chat",
@@ -387,6 +388,8 @@
       "title": "Mes projets",
       "search_placeholder": "Rechercher des projets...",
       "no_projects": "Aucun projet trouvé.",
+      "empty_title": "Aucun projet pour le moment",
+      "empty_text": "Votre compte n'est pas encore associé à un projet. Veuillez contacter votre administrateur pour obtenir l'accès.",
       "loading": "Chargement..."
     },
     "chat": {

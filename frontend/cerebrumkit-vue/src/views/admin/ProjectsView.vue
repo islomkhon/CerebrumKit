@@ -3500,7 +3500,15 @@ a48.667 48.667 0 0 0-7.5 0" /></svg>
                 </div>
               </div>
             </div>
-            <div v-if="userChats.length === 0" class="projects-empty">{{ t('admin.chat.no_chats') }}</div>
+            <!-- An empty chats column used to be one grey line, which read as a
+                 blank panel. The card says what is missing and how to fix it. -->
+            <div v-if="userChats.length === 0" class="chats-blank">
+              <div class="chats-blank-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155"/></svg>
+              </div>
+              <p class="chats-blank-title">{{ t('admin.chat.no_chats') }}</p>
+              <p class="chats-blank-text">{{ t('admin.chat.no_chats_hint') }}</p>
+            </div>
           </template>
           <div v-else class="loading-overlay loading-active">
             <div class="loading-spinner"></div>
@@ -4322,6 +4330,32 @@ a48.667 48.667 0 0 0-7.5 0" /></svg>
 .projects-empty {
   padding: 2rem 1rem; text-align: center;
   font-size: 0.875rem; color: #9ca3af;
+}
+/* The chats panel with nothing in it: a card rather than a bare grey line, so
+   the column reads as "nothing here yet" instead of "still loading". */
+.chats-blank {
+  margin: 1rem 0.5rem;
+  padding: 1.25rem 0.75rem;
+  text-align: center;
+  border: 1px dashed #e5e7eb;
+  border-radius: 0.75rem;
+  background: #fbfbfe;
+}
+.chats-blank-icon {
+  width: 2.5rem; height: 2.5rem;
+  margin: 0 auto 0.75rem;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 0.75rem;
+  background: #eef2ff; color: #4f46e5;
+}
+.chats-blank-icon svg { width: 1.375rem; height: 1.375rem; }
+.chats-blank-title {
+  margin: 0 0 0.375rem;
+  font-size: 0.875rem; font-weight: 600; color: #374151;
+}
+.chats-blank-text {
+  margin: 0;
+  font-size: 0.8125rem; line-height: 1.5; color: #6b7280;
 }
 .projects-pagination {
   display: flex; align-items: center; justify-content: flex-end;

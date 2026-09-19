@@ -182,6 +182,7 @@
       "new": "+ New",
       "search": "Search chats...",
       "no_chats": "No chats",
+      "no_chats_hint": "Start a conversation by clicking + New.",
       "no_description": "(no description)",
       "new_messages": "new",
       "create_title": "Create Chat",
@@ -387,6 +388,8 @@
       "title": "My Projects",
       "search_placeholder": "Search projects...",
       "no_projects": "No projects found.",
+      "empty_title": "No projects yet",
+      "empty_text": "Your account isn't linked to a project yet. Please contact your administrator to be given access.",
       "loading": "Loading..."
     },
     "chat": {

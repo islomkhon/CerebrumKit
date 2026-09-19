@@ -1,8 +1,21 @@
 ﻿<template>
-  <div class="projects-layout" :class="{ 'projects-layout-single': !showProjectColumn }">
+  <div
+    class="projects-layout"
+    :class="{ 'projects-layout-single': !showProjectColumn, 'projects-layout-blank': noProjects }"
+  >
+    <!-- Nothing is assigned to this account, so there is nothing to lay out:
+         one card explains the situation instead of three empty panels. -->
+    <div v-if="noProjects" class="projects-blank">
+      <div class="projects-blank-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v.75m-8.69-6.44-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z" /></svg>
+      </div>
+      <h2 class="projects-blank-title">{{ t('client.projects.empty_title') }}</h2>
+      <p class="projects-blank-text">{{ t('client.projects.empty_text') }}</p>
+    </div>
+
     <!-- Column 1: Projects (hidden when the client has a single project) -->
     <div
-      v-if="showProjectColumn"
+      v-if="!noProjects && showProjectColumn"
       class="projects-col projects-col-projects"
       :class="{ 'mobile-pane-hidden': mobilePane === 'chat' }"
     >
@@ -46,7 +59,11 @@
     </div>
 
     <!-- Column 2: Chats -->
-    <div class="projects-col projects-col-chats" :class="{ 'mobile-pane-hidden': mobilePane === 'chat' }">
+    <div
+      v-if="!noProjects"
+      class="projects-col projects-col-chats"
+      :class="{ 'mobile-pane-hidden': mobilePane === 'chat' }"
+    >
       <div class="projects-panel">
         <div class="projects-panel-header">
           <div class="projects-panel-title-row">
@@ -95,7 +112,11 @@
     </div>
 
     <!-- Column 3: Conversation -->
-    <div class="projects-col projects-col-chat" :class="{ 'mobile-pane-hidden': mobilePane === 'list' }">
+    <div
+      v-if="!noProjects"
+      class="projects-col projects-col-chat"
+      :class="{ 'mobile-pane-hidden': mobilePane === 'list' }"
+    >
       <div class="projects-panel chat-panel">
         <template v-if="selectedChatId">
           <div class="projects-panel-header chat-header">
@@ -232,7 +253,9 @@ const currentUser = computed(() => authStore.user)
 // ── Projects ──
 const projects = ref<Project[]>([])
 const selectedProjectId = ref<number | null>(null)
-const loadingProjects = ref(false)
+// Starts true: onMounted clears it when the request returns, so the first
+// paint shows a spinner instead of a flash of the "no projects" message.
+const loadingProjects = ref(true)
 const projectSearch = ref('')
 
 const filteredProjects = computed(() => {
@@ -247,6 +270,11 @@ const filteredProjects = computed(() => {
 // A client owning a single project has nothing to choose from, so the projects
 // column is hidden and the chat list expands into its place.
 const showProjectColumn = computed(() => projects.value.length !== 1)
+
+// An account with nothing assigned to it has no project, so there is no chat
+// and no conversation to show either. Without this the three panels sat there
+// in their empty state, the chat column spinning forever.
+const noProjects = computed(() => !loadingProjects.value && projects.value.length === 0)
 
 // ── Chats ──
 const chats = ref<Chat[]>([])
@@ -729,6 +757,54 @@ function onMessagesScroll() {
 
 .projects-layout-single {
   grid-template-columns: minmax(13rem, 16rem) minmax(0, 1fr);
+}
+
+/* A client with no projects has no columns to fill, so the layout drops the
+   grid and centres the one card that explains the situation. */
+.projects-layout-blank {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.projects-blank {
+  max-width: 30rem;
+  padding: 2.25rem 1.75rem;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  text-align: center;
+}
+
+.projects-blank-icon {
+  width: 2.75rem;
+  height: 2.75rem;
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  background: #eef2ff;
+  color: #6366f1;
+}
+
+.projects-blank-icon svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.projects-blank-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.projects-blank-text {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: #6b7280;
 }
 
 .projects-col {

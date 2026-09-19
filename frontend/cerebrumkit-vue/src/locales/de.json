@@ -182,6 +182,7 @@
       "new": "+ Neu",
       "search": "Unterhaltungen suchen...",
       "no_chats": "Keine Unterhaltungen",
+      "no_chats_hint": "Klicken Sie auf + Neu, um eine Unterhaltung zu starten.",
       "no_description": "(keine Beschreibung)",
       "new_messages": "neu",
       "create_title": "Unterhaltung erstellen",
@@ -387,6 +388,8 @@
       "title": "Meine Projekte",
       "search_placeholder": "Projekte suchen...",
       "no_projects": "Keine Projekte gefunden.",
+      "empty_title": "Noch keine Projekte",
+      "empty_text": "Ihr Konto ist noch keinem Projekt zugeordnet. Bitte wenden Sie sich an Ihren Administrator, um Zugriff zu erhalten.",
       "loading": "Laden..."
     },
     "chat": {
