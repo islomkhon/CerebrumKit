@@ -204,3 +204,15 @@ systems. Today his main interests are **AI agents**, **software engineering for
 and with AI**, and **trustworthy AI**. If you would like to cooperate or discuss
 a use case, please do not hesitate to contact him by email at
 [islomkhon@126.com](mailto:islomkhon@126.com) or by phone at +86 139 1487 4257.
+
+## License
+
+Apache License 2.0 - see [LICENSE](LICENSE) and [NOTICE](NOTICE).
+
+Anyone may use, modify and redistribute this software, including commercially.
+In return the license asks that you keep the copyright notice, the license text
+and the `NOTICE` file with any copy or derivative work, and note the files you
+changed. It comes with no warranty, and it includes an express grant of patent
+rights from contributors, so a contributor cannot later assert a patent over
+code they contributed. The name and logo are not covered by the license, so a
+fork needs its own branding.
