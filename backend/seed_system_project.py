@@ -17,6 +17,8 @@ What it creates
   storage tables, plus one that hands a message to another agent.
 * Skill "System Administration" holding those tools.
 * Agent "Project Manager" carrying that skill, wired into the project workflow.
+* Context tools on that agent: the lookups it runs by itself before it reads
+  the message, each under the heading it is placed in the prompt with.
 
 The tools it installs call `app.system_management`; the delegation tool calls
 `app.core.delegation`. Nothing here talks to the REST API.
@@ -27,7 +29,7 @@ import sys
 
 from app.core.agent_loop import DELEGATION_TOOL_NAMES
 from app.core.database import Base, SessionLocal, engine
-from app.models import Agent, Project, Skill, Tool, User
+from app.models import Agent, AgentContextTool, Project, Skill, Tool, User
 from app.system_management import ensure_workflow, workflow_with_agent
 
 PROJECT_NAME = "System"
@@ -83,6 +85,16 @@ DELEGATION_TOOL_NAME = sorted(DELEGATION_TOOL_NAMES)[0]
 # Tools that already exist in most installs and are just as useful to the Project
 # Manager. They are attached when present and skipped with a note when not.
 SHARED_TOOL_NAMES = ["environment_info", "conversation_lookup", "memory_write", "memory_lookup"]
+
+# What the Project Manager looks up on its own before it reads the message, in
+# the order the prompt should read. Each entry is the tool name, the heading
+# written above that tool's output, and the JSON arguments for a tool that needs
+# them. The tool has to reach the agent through a skill first, which is why these
+# are all in SHARED_TOOL_NAMES above.
+MANAGER_CONTEXT_TOOLS = [
+    ("environment_info", "The environment you are running in", None),
+    ("memory_lookup", "The things you learned", None),
+]
 
 
 # ── function specs ───────────────────────────────────────────────────────────
@@ -476,6 +488,45 @@ def _upsert_tool(db, spec):
     return tool, created
 
 
+def _upsert_context_tools(db, agent):
+    """Match an agent's pre-run lookups to MANAGER_CONTEXT_TOOLS, in order.
+
+    Rows are matched by (agent, tool), so re-running updates the heading and the
+    position in place. An entry this file no longer lists is dropped, the same
+    way `skills` is set rather than appended to - the seeded state stays the
+    state this file describes.
+    """
+    links = []
+    for position, (name, comment, arguments) in enumerate(MANAGER_CONTEXT_TOOLS):
+        tool = db.query(Tool).filter(Tool.name == name).first()
+        if tool is None:
+            print(f"[!!] context tool '{name}' is not in this database; skipping it")
+            continue
+        link = next(
+            (row for row in agent.context_tool_links if row.tool_id == tool.id),
+            None,
+        )
+        if link is None:
+            # Appending through the relationship is what fills in agent_id.
+            link = AgentContextTool(tool_id=tool.id)
+            agent.context_tool_links.append(link)
+            print(f"[new] context tool '{tool.name}' -> {agent.name}")
+        else:
+            print(f"[upd] context tool '{tool.name}' -> {agent.name}")
+        link.comment = comment
+        link.arguments = json.dumps(arguments) if arguments is not None else None
+        link.position = position
+        links.append(link)
+
+    wanted = {link.tool_id for link in links}
+    for link in list(agent.context_tool_links):
+        if link.tool_id not in wanted:
+            db.delete(link)
+            print(f"[del] context tool id {link.tool_id} -> {agent.name}")
+    db.flush()
+    return links
+
+
 def _resolve_system_project(db):
     """The project marked is_system, or the one named 'System', or a new row."""
     project = db.query(Project).filter(Project.is_system.is_(True)).first()
@@ -576,6 +627,8 @@ def seed():
         agent.skills = [skill, delegation_skill]
         db.flush()
 
+        context_links = _upsert_context_tools(db, agent)
+
         if all(member.id != agent.id for member in project.agents):
             project.agents.append(agent)
 
@@ -589,6 +642,7 @@ def seed():
         print(f"Project Manager: {agent.id}  ({agent.name})")
         print(f"Skill          : {skill.id}  ({len(skill.tools)} tools)")
         print(f"Skill          : {delegation_skill.id}  ({len(delegation_skill.tools)} tools)")
+        print(f"Context tools  : {len(context_links)} on the Project Manager")
         print(f"Workflow       : {json.dumps(project.workflow)[:160]}")
         print()
         print("Open the admin panel, pick this project's chat and ask the Project Manager.")

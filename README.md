@@ -153,3 +153,26 @@ Add your models under `backend/app/models/`, register them in
 tables with `backend/migrate.py`. Anything a project needs at runtime is better
 as a tool over the storage library, because then the people who own the project
 can change it without a deploy.
+
+## Author
+
+![Islomkhon Nizomkhonov](IslomkhonNizomkhonov.png)
+
+### Islomkhon Nizomkhonov (小伊)
+
+- **Education**: Master's degree in Computer Science, China University of Mining
+  and Technology
+- **Key skills**: Software Engineering, Deep Learning, Machine Learning, Data
+  Science, IoT, Predictive Maintenance
+
+Islomkhon Nizomkhonov was born in 1994 in Tashkent, Uzbekistan. He is a senior
+software engineer with more than six years of experience in machine learning and
+predictive maintenance. He has worked with several industries and large
+companies, including [XCMG (徐工集团)](https://www.xcmg.com/) and
+[Uztelecom (Uzbekistan's national telecom provider)](https://uztelecom.uz/),
+where he delivered solutions built on deep learning techniques. His research
+focuses on the use of neural networks for fault diagnosis in industrial IoT
+systems. Today his main interests are **AI agents**, **software engineering for
+and with AI**, and **trustworthy AI**. If you would like to cooperate or discuss
+a use case, please do not hesitate to contact him by email at
+[islomkhon@126.com](mailto:islomkhon@126.com) or by phone at +86 139 1487 4257.

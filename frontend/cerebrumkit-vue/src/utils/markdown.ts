@@ -13,8 +13,13 @@ function renderInline(value: string) {
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
     .replace(/~~([^~]+)~~/g, '<del>$1</del>')
     .replace(/\*([^*]+)\*/g, '<em>$1</em>')
-    .replace(/!\[([^\]]*)\]\((https?:\/\/[^)\s]+)\)/g, '<img src="$2" alt="$1" loading="lazy">')
-    .replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
+    // Images come from http(s) or from this app's own public folder. Anything
+    // else - a data: or javascript: URL - is left as the text it arrived as.
+    .replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, (match: string, alt: string, src: string) => {
+      if (!/^(https?:\/\/|\/|\.\/)/.test(src)) return match
+      return `<img src="${src}" alt="${alt}" loading="lazy">`
+    })
+    .replace(/\[([^\]]+)\]\(((?:https?:\/\/|mailto:)[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
 }
 
 function flushParagraph(lines: string[], out: string[]) {

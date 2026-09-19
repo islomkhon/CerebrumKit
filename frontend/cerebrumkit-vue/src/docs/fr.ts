@@ -61,6 +61,17 @@ export const DOC_SECTIONS: DocSection[] = [
       'Un message arrive sur le websocket du chat. La boucle d’agent lit le flux de travail du projet, choisit l’agent ou le groupe qui doit répondre, construit le prompt système à partir de la description de l’agent, de ses compétences et de la sortie des outils préalables, puis appelle le modèle. Les appels d’outils reviennent sous forme de function calls ; chacun est exécuté contre le corps de l’outil stocké en base, avec les identifiants de projet, de chat, d’agent et d’utilisateur injectés, si bien qu’un outil ne peut jamais toucher que sa propre exécution. Les résultats repartent vers le modèle, et le texte qu’il produit est diffusé dans le chat.',
       '',
       'Comme les définitions d’outils et de compétences vivent en base plutôt que dans le code, en modifier une dans le panneau prend effet à l’exécution suivante, sans redémarrage ni déploiement.',
+
+      '',
+      '## Author',
+      '![Islomkhon Nizomkhonov](/IslomkhonNizomkhonov.png)',
+      '',
+      '### Islomkhon Nizomkhonov (小伊)',
+      '',
+      '- **Formation** : master en informatique, China University of Mining and Technology',
+      '- **Compétences clés** : ingénierie logicielle, apprentissage profond, apprentissage automatique, science des données, IoT, maintenance prédictive',
+      '',
+      'Islomkhon Nizomkhonov est né en 1994 à Tachkent, en Ouzbékistan. Il est ingénieur logiciel senior avec plus de six ans d\'expérience en apprentissage automatique et en maintenance prédictive. Il a travaillé avec plusieurs secteurs et de grandes entreprises, notamment [XCMG (徐工集团)](https://www.xcmg.com/) et [Uztelecom (l\'opérateur national de télécommunications d\'Ouzbékistan)](https://uztelecom.uz/), pour lesquelles il a livré des solutions fondées sur l\'apprentissage profond. Ses recherches portent sur l\'utilisation de réseaux de neurones pour le diagnostic de pannes dans les systèmes IoT industriels. Aujourd\'hui, il se concentre sur les **agents IA**, l\'**ingénierie logicielle pour et avec l\'IA** et l\'**IA digne de confiance**. Si vous souhaitez collaborer ou discuter d\'un cas d\'usage, n\'hésitez pas à le contacter par e-mail à [islomkhon@126.com](mailto:islomkhon@126.com) ou par téléphone au +86 139 1487 4257.\',',
     ].join('\n'),
   },
   {

@@ -99,6 +99,17 @@ export const DOC_SECTIONS: DocSection[] = [
       'A message arrives on a chat websocket. The agent loop reads the project workflow, picks the agent or group that should answer, builds the system prompt from the agent\'s description plus its skills plus any pre-run tool output, and calls the model. Tool calls come back as function calls; each is executed against the tool body stored in the database, with the project, chat, agent and user ids injected so a tool can only ever touch its own run. Results go back to the model, and the text it produces is broadcast to the chat.',
       '',
       'Because tool and skill definitions live in the database rather than in the code, editing one in the panel takes effect on the next run with no restart and no deploy.',
+
+      '',
+      '## Author',
+      '![Islomkhon Nizomkhonov](/IslomkhonNizomkhonov.png)',
+      '',
+      '### Islomkhon Nizomkhonov (小伊)',
+      '',
+      '- **Education**: Master\'s degree in Computer Science, China University of Mining and Technology',
+      '- **Key skills**: Software Engineering, Deep Learning, Machine Learning, Data Science, IoT, Predictive Maintenance',
+      '',
+      'Islomkhon Nizomkhonov was born in 1994 in Tashkent, Uzbekistan. He is a senior software engineer with more than six years of experience in machine learning and predictive maintenance. He has worked with several industries and large companies, including [XCMG (徐工集团)](https://www.xcmg.com/) and [Uztelecom (Uzbekistan\'s national telecom provider)](https://uztelecom.uz/), where he delivered solutions built on deep learning techniques. His research focuses on the use of neural networks for fault diagnosis in industrial IoT systems. Today his main interests are **AI agents**, **software engineering for and with AI**, and **trustworthy AI**. If you would like to cooperate or discuss a use case, please do not hesitate to contact him by email at [islomkhon@126.com](mailto:islomkhon@126.com) or by phone at +86 139 1487 4257.',
     ].join('\n'),
   },
   {

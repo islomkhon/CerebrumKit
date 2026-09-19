@@ -590,6 +590,17 @@ onBeforeUnmount(() => {
 :deep(.doc-content a:hover) {
   border-bottom-color: var(--primary);
 }
+/* The author portrait sits above the bio. A fixed width keeps it a portrait
+   rather than a full-bleed image, and the shadow lifts it off the card. */
+:deep(.doc-content img) {
+  display: block;
+  width: 150px;
+  height: auto;
+  margin: 1.1rem 0 1.4rem;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 12px 26px -14px hsl(258 45% 6% / 0.45);
+}
 
 /* Inline code reads as a token, not as a highlighted word. */
 :deep(.doc-content code) {
@@ -799,6 +810,9 @@ onBeforeUnmount(() => {
 
   .doc-card {
     padding: 1.45rem 1.35rem 1.6rem;
+  }
+  :deep(.doc-content img) {
+    width: 118px;
   }
 
   .to-top {

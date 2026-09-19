@@ -61,6 +61,17 @@ export const DOC_SECTIONS: DocSection[] = [
       'Eine Nachricht trifft über das WebSocket der Unterhaltung ein. Die Agentenschleife liest den Arbeitsablauf des Projekts, wählt den Agenten oder die Gruppe, die antworten soll, baut den System-Prompt aus der Beschreibung des Agenten, seinen Fähigkeiten und der Ausgabe der vorab ausgeführten Werkzeuge und ruft das Modell auf. Werkzeugaufrufe kommen als Function Calls zurück; jeder wird gegen den in der Datenbank gespeicherten Werkzeugrumpf ausgeführt, wobei Projekt-, Unterhaltungs-, Agenten- und Benutzer-ID eingesetzt werden — ein Werkzeug kann also immer nur den eigenen Lauf berühren. Die Ergebnisse gehen zurück an das Modell, und der erzeugte Text wird in die Unterhaltung gesendet.',
       '',
       'Weil Werkzeug- und Fähigkeitsdefinitionen in der Datenbank statt im Code liegen, wirkt eine Änderung im Panel beim nächsten Lauf — ohne Neustart und ohne Deployment.',
+
+      '',
+      '## Author',
+      '![Islomkhon Nizomkhonov](/IslomkhonNizomkhonov.png)',
+      '',
+      '### Islomkhon Nizomkhonov (小伊)',
+      '',
+      '- **Ausbildung**: Master in Informatik, China University of Mining and Technology',
+      '- **Kernkompetenzen**: Software Engineering, Deep Learning, Machine Learning, Data Science, IoT, Predictive Maintenance',
+      '',
+      'Islomkhon Nizomkhonov wurde 1994 in Taschkent, Usbekistan, geboren. Er ist Senior Software Engineer mit mehr als sechs Jahren Erfahrung in Machine Learning und Predictive Maintenance. Er hat mit verschiedenen Branchen und großen Unternehmen gearbeitet, darunter [XCMG (徐工集团)](https://www.xcmg.com/) und [Uztelecom (der nationale Telekommunikationsanbieter Usbekistans)](https://uztelecom.uz/), und dort Lösungen auf Basis von Deep-Learning-Verfahren entwickelt. Seine Forschung befasst sich mit dem Einsatz neuronaler Netze zur Fehlerdiagnose in industriellen IoT-Systemen. Aktuell liegen seine Schwerpunkte auf **AI Agents**, **Software Engineering für und mit KI** und **vertrauenswürdiger KI**. Wenn Sie zusammenarbeiten oder einen Anwendungsfall besprechen möchten, erreichen Sie ihn per E-Mail unter [islomkhon@126.com](mailto:islomkhon@126.com) oder telefonisch unter +86 139 1487 4257.',
     ].join('\n'),
   },
   {

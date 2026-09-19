@@ -61,6 +61,17 @@ export const DOC_SECTIONS: DocSection[] = [
       'Un mensaje llega por el websocket del chat. El bucle del agente lee el flujo de trabajo del proyecto, elige el agente o el grupo que debe responder, arma el prompt de sistema con la descripción del agente, sus habilidades y la salida de las herramientas previas, y llama al modelo. Las llamadas a herramientas vuelven como function calls; cada una se ejecuta contra el cuerpo de la herramienta guardado en la base de datos, con los identificadores de proyecto, chat, agente y usuario inyectados, de modo que una herramienta solo puede tocar su propia ejecución. Los resultados vuelven al modelo, y el texto que produce se emite en el chat.',
       '',
       'Como las definiciones de herramientas y habilidades viven en la base de datos y no en el código, editar una en el panel surte efecto en la siguiente ejecución, sin reinicio y sin despliegue.',
+
+      '',
+      '## Author',
+      '![Islomkhon Nizomkhonov](/IslomkhonNizomkhonov.png)',
+      '',
+      '### Islomkhon Nizomkhonov (小伊)',
+      '',
+      '- **Formación**: máster en Ciencias de la Computación, China University of Mining and Technology',
+      '- **Competencias clave**: ingeniería de software, aprendizaje profundo, aprendizaje automático, ciencia de datos, IoT, mantenimiento predictivo',
+      '',
+      'Islomkhon Nizomkhonov nació en 1994 en Taskent, Uzbekistán. Es ingeniero de software sénior con más de seis años de experiencia en aprendizaje automático y mantenimiento predictivo. Ha trabajado con diversos sectores y grandes empresas, como [XCMG (徐工集团)](https://www.xcmg.com/) y [Uztelecom (el operador nacional de telecomunicaciones de Uzbekistán)](https://uztelecom.uz/), donde ha entregado soluciones basadas en técnicas de aprendizaje profundo. Su investigación se centra en el uso de redes neuronales para el diagnóstico de fallos en sistemas IoT industriales. Actualmente sus intereses principales son los **agentes de IA**, la **ingeniería de software para y con IA** y la **IA fiable**. Si desea colaborar o comentar un caso de uso, no dude en escribirle a [islomkhon@126.com](mailto:islomkhon@126.com) o llamarle al +86 139 1487 4257.',
     ].join('\n'),
   },
   {
