@@ -1,5 +1,10 @@
 # CerebrumKit
 
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-blue)
+![Node 20+](https://img.shields.io/badge/node-20%2B-green)
+![Postgres | SQLite](https://img.shields.io/badge/database-postgres%20%7C%20sqlite-336791)
+
 A starting point for agentic projects. You get an admin panel where agents are
 built out of **skills** and **tools**, a storage library of business tables you
 can hand those agents, and a client panel where the people the project is for
@@ -9,6 +14,21 @@ Nothing in here belongs to any particular business: no catalogue, no orders, no
 product tables. What is here is the machinery every such project needs, so a new
 project starts at "what should the agents do" instead of at "how do I run an
 agent loop".
+
+## Status
+
+Early, and honest about it. The agent loop, the tool and skill registry, storage,
+chats, memory, delegation, users and roles, and the admin and client panels all
+work and are used daily. What is missing is a public demo and a test suite.
+
+Two things to know before you run it anywhere real:
+
+- **A tool body is code execution.** Bodies run with full builtins and are not
+  sandboxed, deliberately - the shipped tools import `requests`, SQLAlchemy and
+  app internals. Tool authoring is admin-only for that reason, and
+  `tools.body` should be reviewed like a commit.
+- **One process.** The websocket registry and in-flight agent tasks live in
+  process memory, so the deploy runs a single uvicorn worker.
 
 ## What you get
 
@@ -38,6 +58,37 @@ agent loop".
   a **Project Manager** agent whose tools let it create and edit users,
   projects, agents, skills, tools and storage tables. An install can be
   administered by asking it in chat.
+
+## See it
+
+**The admin panel is where the agents are built.** A project owns its members,
+its agents and its tables, and the workflow on the right decides which agent
+answers a message and in what order - every node carries the skills and tools it
+runs with.
+
+![The project view: agents, users, tables, and the start / group / stop workflow](docs/screenshots/projects.png)
+
+**The client panel is what the people the project is for actually see.** One chat
+per conversation, the agents answering in order, and the user's own projects and
+nothing else.
+
+![A customer asking about a late order, with the second agent correcting the first](docs/screenshots/chat.png)
+
+In the screenshot above the first agent answers from the tables, then the
+escalation group's analyst reads the same order and corrects the policy the first
+agent applied - which is the whole point of putting more than one agent in a
+workflow.
+
+**Storage is a table editor over real Postgres tables**, with a description on
+the table and on every column, because those descriptions are what the model
+reads when it decides which tool to call.
+
+![Storage tables in the panel, with column descriptions and Excel import / export](docs/screenshots/storage.png)
+
+**A tool is a function spec plus a Python body, both database rows.** The panel
+edits both; the next message uses the new version, with no restart and no deploy.
+
+![The tool list: function spec and Python body for each tool](docs/screenshots/tools.png)
 
 ## Requirements
 
