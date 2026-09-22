@@ -15,11 +15,16 @@ product tables. What is here is the machinery every such project needs, so a new
 project starts at "what should the agents do" instead of at "how do I run an
 agent loop".
 
+![A customer asks about a late order (AC-10477). The first agent promises a late-delivery credit; a second agent reads the same order and points out the credit only applies while the status is shipped or packed - this order is delayed](docs/demo.gif)
+
+**[🎥 Watch the whole run - 71 seconds, captioned, no audio](https://youtu.be/yz9uJA67-IY)**
+
 ## Status
 
 Early, and honest about it. The agent loop, the tool and skill registry, storage,
 chats, memory, delegation, users and roles, and the admin and client panels all
-work and are used daily. What is missing is a public demo and a test suite.
+work and are used daily. What is missing is a hosted public demo and a test suite - there is a
+[71-second walkthrough](https://youtu.be/yz9uJA67-IY) if you would rather watch than read, but that is a recording, not an instance you can poke at.
 
 Two things to know before you run it anywhere real:
 
