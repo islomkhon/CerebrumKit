@@ -145,6 +145,18 @@ SYSTEM_DESCRIPTIONS = {
 
 
 def main() -> None:
+    # COMMENT ON is Postgres syntax and SQLite has no equivalent, so on SQLite
+    # every statement below was a syntax error that stopped seed_all.py and left
+    # an install that could not be finished. The descriptions are a Postgres
+    # feature; say so and leave the rest of the seed alone.
+    if engine.dialect.name != "postgresql":
+        print(
+            "[SKIP] %s has no COMMENT statement, so table and column descriptions "
+            "were not written. Point DATABASE_URL at Postgres for those."
+            % engine.dialect.name
+        )
+        return
+
     inspector = inspect(engine)
     table_names = set(inspector.get_table_names())
     with engine.begin() as connection:

@@ -4,7 +4,8 @@
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
       "version": "20"
-    }
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker:4": {}
   },
   "hostRequirements": {
     "cpus": 2,

@@ -26,9 +26,27 @@ class Settings(BaseSettings):
     # .devcontainer/start.sh, which sets it from the container's own domain.
     cors_origin_regex: str = ""
 
+    # The accounts seed.py creates on a fresh install. They are declared here
+    # rather than read with os.getenv because a value written in backend/.env
+    # reaches this settings object and never reaches the process environment, so
+    # os.getenv cannot see it - and the README tells you to put them in .env.
+    # The first three have no fallback anywhere: the seeder refuses to create an
+    # account until they are set.
+    seed_admin_email: str = ""
+    seed_client_email: str = ""
+    seed_password: str = ""
+    seed_admin_country: str = "CN"
+    seed_client_country: str = "CN"
+
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
+        # Anything else in the environment or in that file is ignored. Without
+        # this, pydantic-settings refuses to build Settings at all when it meets
+        # a variable it does not know. That is not a warning: it raises, so
+        # setting SEED_ADMIN_EMAIL the way the README describes stopped
+        # migrate.py - and the whole seeder, and the server - from starting.
+        extra = "ignore"
 
     @model_validator(mode="after")
     def _warn_on_insecure_secret(self) -> "Settings":

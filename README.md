@@ -25,9 +25,9 @@ agent loop".
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/islomkhon/CerebrumKit)
 
 That link opens this repository in a container in your own GitHub account. It
-installs both halves against SQLite, seeds the demo data, and starts the backend
-and the panel: two minutes, nothing to install, no configuration. The two
-accounts it creates are:
+brings up the database, installs both halves, seeds the demo data and starts the
+backend and the panel: a couple of minutes, nothing to install, no
+configuration. The two accounts it creates are:
 
 | Account | Email | Password |
 | --- | --- | --- |
@@ -127,7 +127,8 @@ edits both; the next message uses the new version, with no restart and no deploy
 
 - Python 3.12+ and Node 20+
 - PostgreSQL (or SQLite for a quick look, by leaving `DATABASE_URL` on its
-  default)
+  default - the storage descriptions are a `COMMENT ON` feature, so a SQLite
+  install has the panels and the agent loop but no table or column comments)
 
 ## Quickstart
 

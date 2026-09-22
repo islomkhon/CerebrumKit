@@ -29,32 +29,39 @@ sys.path.insert(0, BACKEND_DIR)
 from sqlalchemy import text  # noqa: E402
 
 import app.models  # noqa: F401,E402 - registers every model on Base.metadata
+from app.core.config import settings  # noqa: E402
 from app.core.database import SessionLocal  # noqa: E402
 from app.core.security import hash_password  # noqa: E402
 from app.models.country import Country  # noqa: E402
 from app.models.user import User  # noqa: E402
 
+# These come from settings, not os.getenv: a value written in backend/.env - and
+# the README tells you to put them there - is read by pydantic-settings and never
+# lands in the process environment, so os.getenv returned "" for every one of
+# them and the seeder always refused.
 ADMINS = [
     {
         "name": "Admin",
-        "email": os.getenv("SEED_ADMIN_EMAIL", ""),
-        "country_code": os.getenv("SEED_ADMIN_COUNTRY", "CN"),
+        "email": settings.seed_admin_email,
+        "country_code": settings.seed_admin_country,
     },
 ]
 
 CLIENTS = [
     {
         "name": "Client",
-        "email": os.getenv("SEED_CLIENT_EMAIL", ""),
-        "country_code": os.getenv("SEED_CLIENT_COUNTRY", "CN"),
+        "email": settings.seed_client_email,
+        "country_code": settings.seed_client_country,
     },
 ]
 
-PASSWORD = os.getenv("SEED_PASSWORD", "")
+PASSWORD = settings.seed_password
 
 
 def _require_credentials() -> None:
-    """Refuse to seed until the accounts to create are supplied via the environment.
+    """Refuse to seed until the accounts to create have been supplied.
+
+    They are read from backend/.env, or from the environment.
 
     There is deliberately no fallback value for any of these. A default email or
     password in the source tree is a credential that ships with every checkout
@@ -73,7 +80,7 @@ def _require_credentials() -> None:
     if missing:
         raise SystemExit(
             "Set " + ", ".join(missing) + " before seeding - the accounts to create "
-            "come from the environment. See backend/.env.example."
+            "come from backend/.env, or from the environment. See backend/.env.example."
         )
 
 # Every table the seeder owns, child-first, so --force can empty the database
