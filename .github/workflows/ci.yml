@@ -1,0 +1,98 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  # The install path a container takes, run for real: both halves installed
+  # against SQLite, seeded, started, and then reached the way a browser reaches
+  # them - through the forwarded hostname, not through localhost.
+  demo:
+    name: Install, seed and serve
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Both scripts parse
+        run: |
+          bash -n .devcontainer/setup.sh
+          bash -n .devcontainer/start.sh
+
+      - name: The app imports with the default settings
+        working-directory: backend
+        run: python -c "import app.main; print('app.main imports')"
+
+      - name: Set up a fresh container the way a CodeSpace does
+        env:
+          SEED_ADMIN_EMAIL: admin@cerebrumkit.test
+          SEED_CLIENT_EMAIL: client@cerebrumkit.test
+          SEED_PASSWORD: cerebrumkit-demo-password
+        run: bash .devcontainer/setup.sh
+
+      - name: Start both halves and reach them through a forwarded host
+        env:
+          CODESPACE_NAME: ci-demo
+          GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN: app.github.dev
+        run: |
+          set -euo pipefail
+          bash .devcontainer/start.sh
+
+          echo "--- frontend/.env ---"
+          cat frontend/cerebrumkit-vue/.env
+
+          grep -q '^VITE_API_URL=https://ci-demo-8000.app.github.dev$' frontend/cerebrumkit-vue/.env
+          grep -q '^VITE_ALLOWED_HOSTS=.app.github.dev$' frontend/cerebrumkit-vue/.env
+
+          code() { curl -s -o /dev/null -w '%{http_code}' "$@"; }
+
+          echo "backend  /docs, direct              -> $(code http://127.0.0.1:8000/docs)"
+          echo "panel    /, the forwarded host      -> $(code -H 'Host: ci-demo-5173.app.github.dev' http://127.0.0.1:5173/)"
+          echo "panel    /, a host it has to refuse -> $(code -H 'Host: evil.example.com' http://127.0.0.1:5173/)"
+
+          test "$(code http://127.0.0.1:8000/docs)" = "200"
+          test "$(code -H 'Host: ci-demo-5173.app.github.dev' http://127.0.0.1:5173/)" = "200"
+          test "$(code -H 'Host: evil.example.com' http://127.0.0.1:5173/)" = "403"
+
+          echo "--- CORS preflight from the panel's forwarded origin ---"
+          curl -s -D - -o /dev/null -X OPTIONS http://127.0.0.1:8000/auth/login \
+            -H 'Origin: https://ci-demo-5173.app.github.dev' \
+            -H 'Access-Control-Request-Method: POST' | grep -i '^access-control-allow-origin'
+
+      - name: Logs, if it did not
+        if: failure()
+        run: |
+          echo "--- backend ---"; tail -40 /tmp/cerebrumkit-backend.log || true
+          echo "--- frontend ---"; tail -40 /tmp/cerebrumkit-frontend.log || true
+
+  # The panel's own build, which is what a deployment ships.
+  frontend:
+    name: Type-check and build the panel
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: frontend/cerebrumkit-vue/package-lock.json
+
+      - name: Install
+        working-directory: frontend/cerebrumkit-vue
+        run: npm ci
+
+      - name: Type-check and build
+        working-directory: frontend/cerebrumkit-vue
+        env:
+          VITE_API_URL: http://localhost:8000
+        run: npm run build
