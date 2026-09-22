@@ -13,13 +13,13 @@ jobs:
     name: Install, seed and serve
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: "20"
 
@@ -28,16 +28,12 @@ jobs:
           bash -n .devcontainer/setup.sh
           bash -n .devcontainer/start.sh
 
-      - name: The app imports with the default settings
-        working-directory: backend
-        run: python -c "import app.main; print('app.main imports')"
-
       - name: Set up a fresh container the way a CodeSpace does
-        env:
-          SEED_ADMIN_EMAIL: admin@cerebrumkit.test
-          SEED_CLIENT_EMAIL: client@cerebrumkit.test
-          SEED_PASSWORD: cerebrumkit-demo-password
         run: bash .devcontainer/setup.sh
+
+      - name: The app imports, seeded, with the settings a container defaults to
+        working-directory: backend
+        run: venv/bin/python -c "import app.main; print('app.main imports')"
 
       - name: Start both halves and reach them through a forwarded host
         env:
@@ -79,9 +75,9 @@ jobs:
     name: Type-check and build the panel
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: "20"
           cache: npm
