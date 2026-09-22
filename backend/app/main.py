@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 logger = logging.getLogger(__name__)
 
+from app.core.config import settings
 from app.core.database import Base, engine
 from app.routers import (
     admin_projects_router,
@@ -31,9 +32,18 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="CerebrumKit API", version="1.0.0", lifespan=lifespan)
 
+# A local checkout is always one of these. CORS_ORIGIN_REGEX adds an origin that
+# cannot be written down in advance, such as the forwarded hostname a CodeSpace
+# is served from (see .devcontainer/start.sh). Unset, it adds nothing.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173", "http://localhost:5174", "http://127.0.0.1:5174"],
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "http://localhost:5174",
+        "http://127.0.0.1:5174",
+    ],
+    allow_origin_regex=settings.cors_origin_regex or None,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

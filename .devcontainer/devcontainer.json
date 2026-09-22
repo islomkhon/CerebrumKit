@@ -1,0 +1,32 @@
+{
+  "name": "CerebrumKit",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20"
+    }
+  },
+  "hostRequirements": {
+    "cpus": 2,
+    "memory": "4gb",
+    "storage": "16gb"
+  },
+  "forwardPorts": [5173, 8000],
+  "portsAttributes": {
+    "5173": {
+      "label": "CerebrumKit - admin and client panels",
+      "onAutoForward": "openPreview"
+    },
+    "8000": {
+      "label": "CerebrumKit - FastAPI (interactive docs at /docs)",
+      "onAutoForward": "silent"
+    }
+  },
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+  "postStartCommand": "bash .devcontainer/start.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": ["ms-python.python", "Vue.volar"]
+    }
+  }
+}

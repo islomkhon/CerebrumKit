@@ -18,6 +18,14 @@ class Settings(BaseSettings):
     deepseek_model: str = "deepseek-chat"
     deepseek_base_url: str = "https://api.deepseek.com/v1"
 
+    # Additional browser origins allowed to call this API, written as one regular
+    # expression, e.g. `https://.*[.]example[.]dev`. Empty by default, because a
+    # local checkout only ever talks to the localhost origins listed in main.py.
+    # It exists for an install reached through a hostname that cannot be written
+    # down in advance, such as a forwarded Codespace URL - see
+    # .devcontainer/start.sh, which sets it from the container's own domain.
+    cors_origin_regex: str = ""
+
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"

@@ -4,6 +4,7 @@
 ![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-blue)
 ![Node 20+](https://img.shields.io/badge/node-20%2B-green)
 ![Postgres | SQLite](https://img.shields.io/badge/database-postgres%20%7C%20sqlite-336791)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/islomkhon/CerebrumKit)
 
 A starting point for agentic projects. You get an admin panel where agents are
 built out of **skills** and **tools**, a storage library of business tables you
@@ -19,12 +20,39 @@ agent loop".
 
 **[🎥 Watch the whole run - 71 seconds, captioned, no audio](https://youtu.be/yz9uJA67-IY)**
 
+## Try it without installing anything
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/islomkhon/CerebrumKit)
+
+That link opens this repository in a container in your own GitHub account. It
+installs both halves against SQLite, seeds the demo data, and starts the backend
+and the panel: two minutes, nothing to install, no configuration. The two
+accounts it creates are:
+
+| Account | Email | Password |
+| --- | --- | --- |
+| Admin | `admin@cerebrumkit.test` | `cerebrumkit-demo-password` |
+| Client | `client@cerebrumkit.test` | `cerebrumkit-demo-password` |
+
+The agents have no model to answer with until the install has one: add a key in
+**Admin -> Settings -> LLM Connections**, or set a Codespace secret named
+`DEEPSEEK_API_KEY` and rebuild. Everything else - both panels, the storage
+library, the skills and tools, the workflow canvas - works as soon as it starts.
+
+That container belongs to your account, so it spends your Codespaces allowance
+rather than someone else's, and it is not a place for real data. For an install
+you intend to keep, use the quickstart below.
+
 ## Status
 
 Early, and honest about it. The agent loop, the tool and skill registry, storage,
 chats, memory, delegation, users and roles, and the admin and client panels all
-work and are used daily. What is missing is a hosted public demo and a test suite - there is a
-[71-second walkthrough](https://youtu.be/yz9uJA67-IY) if you would rather watch than read, but that is a recording, not an instance you can poke at.
+work and are used daily. What is missing is a hosted public instance and a test
+suite - there is a [71-second walkthrough](https://youtu.be/yz9uJA67-IY) if you
+would rather watch than read, and a
+[container that comes up seeded](#try-it-without-installing-anything) if you
+would rather poke at it, but that container is an instance in your own account
+rather than one link that opens for everyone.
 
 Two things to know before you run it anywhere real:
 
