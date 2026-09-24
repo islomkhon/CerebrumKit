@@ -59,11 +59,20 @@ else
     >> "$LOGS/cerebrumkit-frontend.log" 2>&1 &
 fi
 
-# Wait for the backend to answer before printing an address nobody can use yet.
+# Wait for both to answer before printing an address nobody can use yet, and
+# say which one did not rather than printing an address for a dead port.
+up=""
 for _ in $(seq 1 30); do
-  port_open 5173 && port_open 8000 && break
+  if port_open 5173 && port_open 8000; then up=1; break; fi
   sleep 1
 done
+
+if [ -z "$up" ]; then
+  echo
+  echo "  !! The servers did not both come up within 30s."
+  port_open 8000 || echo "     backend   8000 is not listening - see $LOGS/cerebrumkit-backend.log"
+  port_open 5173 || echo "     frontend  5173 is not listening - see $LOGS/cerebrumkit-frontend.log"
+fi
 
 cat <<MSG
 

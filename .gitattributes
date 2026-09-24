@@ -1,0 +1,13 @@
+# Shell scripts here run inside a Linux container (a CodeSpace, or CI), where a
+# carriage return at the end of a line is not whitespace: it lands in the middle
+# of `set -euo pipefail` and the shebang and the script dies with
+# "$'\r': command not found". Pin them to LF no matter which platform checks
+# them out.
+
+*.sh text eol=lf
+.devcontainer/** text eol=lf
+
+# The Windows launchers stay CRLF.
+*.ps1 text eol=crlf
+*.bat text eol=crlf
+*.cmd text eol=crlf

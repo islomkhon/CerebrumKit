@@ -15,25 +15,53 @@ BACKEND="$ROOT/backend"
 FRONTEND="$ROOT/frontend/cerebrumkit-vue"
 PY="$BACKEND/venv/bin/python"
 
+# Both waits below are bounded. A container that cannot bring its database up
+# has to stop with a reason it can print: an unbounded wait hides the failure
+# and leaves the create screen spinning with nothing on it to read.
+DOCKER_TIMEOUT="${DOCKER_TIMEOUT:-180}"
+DB_TIMEOUT="${DB_TIMEOUT:-120}"
+
 echo "==> Database"
 # Postgres from compose.yaml, and not SQLite, because the storage library puts a
 # description on every table and every column with COMMENT ON. Those
 # descriptions are what the model reads when it picks a tool, and SQLite has no
 # equivalent statement, so a SQLite install cannot show that half of the
 # product. A container is the demo, so it runs what the project runs on.
-until docker info > /dev/null 2>&1; do
-  echo "    waiting for the Docker daemon"
-  sleep 2
-done
 cd "$ROOT"
+
+# Docker-in-Docker is the one part of this path CI never exercises: there, the
+# daemon is on the runner and already running. Here it is a nested daemon that
+# the devcontainer feature starts alongside the container, so it can take a
+# moment to answer.
+waited=0
+until docker info > /dev/null 2>&1; do
+  if [ "$waited" -ge "$DOCKER_TIMEOUT" ]; then
+    echo "!! Docker did not come up within ${DOCKER_TIMEOUT}s, so the database cannot start." >&2
+    echo "   docker on PATH: $(command -v docker 2>/dev/null || echo 'not found')" >&2
+    echo "   docker info says:" >&2
+    { docker info 2>&1 || true; } | tail -6 >&2
+    echo "   The nested daemon logs to /var/log/docker.log inside this container." >&2
+    exit 1
+  fi
+  echo "    waiting for the Docker daemon (${waited}s)"
+  sleep 2
+  waited=$((waited + 2))
+done
+echo "    Docker daemon is up"
+
 docker compose up -d db
-for _ in $(seq 1 60); do
-  if docker compose exec -T db pg_isready -U postgres > /dev/null 2>&1; then
-    echo "    Postgres is accepting connections"
-    break
+
+waited=0
+until docker compose exec -T db pg_isready -U postgres > /dev/null 2>&1; do
+  if [ "$waited" -ge "$DB_TIMEOUT" ]; then
+    echo "!! Postgres did not accept connections within ${DB_TIMEOUT}s. Its last lines:" >&2
+    docker compose logs --tail 30 db >&2 || true
+    exit 1
   fi
   sleep 2
+  waited=$((waited + 2))
 done
+echo "    Postgres is accepting connections"
 
 echo "==> Backend dependencies"
 python3 -m venv "$BACKEND/venv"
