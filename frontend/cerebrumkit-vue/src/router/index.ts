@@ -68,8 +68,10 @@ const routes = [
   },
 ]
 
+// BASE_URL, not '/': the same build has to work at the site root and under a
+// project subpath such as GitHub Pages' /CerebrumKit/.
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes,
 })
 

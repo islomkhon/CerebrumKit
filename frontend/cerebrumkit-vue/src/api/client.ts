@@ -2,11 +2,20 @@ import axios from 'axios'
 import router from '../router'
 import { useAuthStore } from '../stores/auth'
 import { API_BASE_URL } from './baseUrl'
+import { IS_DEMO } from '../demo/mode'
+import { demoAdapter } from '../demo/adapter'
 
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: { 'Content-Type': 'application/json' },
 })
+
+// The demo build has no backend within reach, so every request is answered from
+// the snapshot in src/demo instead. A normal build never sets the flag and keeps
+// axios' own transport.
+if (IS_DEMO) {
+  api.defaults.adapter = demoAdapter
+}
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token')

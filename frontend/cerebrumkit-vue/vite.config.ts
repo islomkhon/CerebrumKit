@@ -18,7 +18,11 @@ export default defineConfig(({ mode }) => {
     .map((host) => host.trim())
     .filter(Boolean)
 
+  // '/' by default, so a normal build is unchanged. The demo build sets
+  // VITE_BASE to the site's subpath (GitHub Pages serves a project site from
+  // /<repo>/), and the router reads the same value back via import.meta.env.BASE_URL.
   return {
+    base: env.VITE_BASE || '/',
     plugins: [vue()],
     server: {
       ...(env.VITE_API_URL
