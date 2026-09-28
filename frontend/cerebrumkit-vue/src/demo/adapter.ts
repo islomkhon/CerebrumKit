@@ -114,6 +114,10 @@ function chatsFor(predicate: (chat: AnyRecord) => boolean): AnyRecord[] {
   return F.chats.filter(predicate)
 }
 
+function chatsIn(project: AnyRecord): number {
+  return F.chats.filter((chat) => String(chat.project_id) === String(project.id)).length
+}
+
 /**
  * Which account the demo signs in as.
  *
@@ -244,7 +248,14 @@ const ROUTES: Route[] = [
   {
     method: 'get',
     pattern: /^\/client\/projects$/,
-    handler: () => F.projects.filter((project) => project.is_active),
+    handler: () =>
+      // Projects that hold a conversation come first. The client panel opens on
+      // the first project in this list, and the System project has no chats:
+      // landing there shows an empty list beside an empty pane, which reads as
+      // a broken demo rather than an empty one.
+      [...F.projects]
+        .filter((project) => project.is_active)
+        .sort((a, b) => chatsIn(b) - chatsIn(a)),
   },
   {
     method: 'get',
