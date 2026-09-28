@@ -5,6 +5,7 @@
 ![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-blue)
 ![Node 20+](https://img.shields.io/badge/node-20%2B-green)
 ![Postgres | SQLite](https://img.shields.io/badge/database-postgres%20%7C%20sqlite-336791)
+[![Live demo](https://img.shields.io/badge/demo-live%20on%20Pages-4f46e5)](https://islomkhon.github.io/CerebrumKit/)
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/islomkhon/CerebrumKit)
 
 A starting point for agentic projects. You get an admin panel where agents are
@@ -22,6 +23,18 @@ agent loop".
 **[🎥 Watch the whole run - 71 seconds, captioned, no audio](https://youtu.be/yz9uJA67-IY)**
 
 ## Try it without installing anything
+
+**[Open the hosted demo](https://islomkhon.github.io/CerebrumKit/)** - the panel
+itself, served as static files from GitHub Pages. It answers from a snapshot of a
+seeded install, so what you are looking at is real: two agents on the workflow
+canvas, each tool's function spec beside the Python body that would run, the
+orders table the support agent reads. It opens already signed in as the admin;
+type any address into the sign-in form and one containing `client` opens the
+client panel instead. What Pages cannot host is the backend, so the model is not
+connected there - a chat reply is canned and your edits are not saved, which is
+what the banner across the top says. [docs/DEMO.md](docs/DEMO.md) has the detail.
+
+To run an agent for real, in a container of your own:
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/islomkhon/CerebrumKit)
 
@@ -48,12 +61,14 @@ you intend to keep, use the quickstart below.
 
 Early, and honest about it. The agent loop, the tool and skill registry, storage,
 chats, memory, delegation, users and roles, and the admin and client panels all
-work and are used daily. What is missing is a hosted public instance and a test
-suite - there is a [71-second walkthrough](https://youtu.be/yz9uJA67-IY) if you
-would rather watch than read, and a
+work and are used daily. What is missing is a hosted instance that can run an
+agent, and a test suite. Until then there is a
+[demo of the panel you can open right now](https://islomkhon.github.io/CerebrumKit/),
+a [71-second walkthrough](https://youtu.be/yz9uJA67-IY) if you would rather
+watch than read, and a
 [container that comes up seeded](#try-it-without-installing-anything) if you
-would rather poke at it, but that container is an instance in your own account
-rather than one link that opens for everyone.
+would rather poke at it - though that container is an instance in your own
+account rather than one link that opens for everyone.
 
 Two things to know before you run it anywhere real:
 
@@ -234,11 +249,13 @@ backend/
   seed_all.py      fresh install in one command
   seed_*.py        the individual seed steps
   export_for_deploy.py, load_for_deploy.py   move data between installs
+  seed_demo_showcase.py, export_demo_fixtures.py   content for the hosted demo
 frontend/cerebrumkit-vue/
   src/views/admin/     Projects (agents, chats, workflow), Skills, Tools,
                        Storage, Users
   src/views/client/    Projects and the chat with the agents
   src/locales/         en, zh, ru, es, fr, de
+  src/demo/            the snapshot and the adapters the hosted demo runs on
 ```
 
 ## How it fits together
@@ -259,6 +276,10 @@ deploy.
 
 See `DEPLOY.md` for nginx, systemd and a rebuild path that keeps the database
 rows (tools, skills, agents) in step with the code.
+
+The static demo on GitHub Pages is a separate artefact with its own workflow and
+its own build command (`npm run build:demo`); it is not part of a deployment,
+and nothing in it can reach a server. See `docs/DEMO.md`.
 
 ## Adding a business domain
 

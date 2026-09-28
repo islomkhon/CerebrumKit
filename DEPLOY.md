@@ -45,6 +45,11 @@ VITE_API_URL=https://cerebrumkit.example.com/api npm run build
 chown -R www-data:www-data /var/www/cerebrumkit/frontend/dist
 ```
 
+That is the whole build. There is a second one, `npm run build:demo`, which
+produces the static panel published to GitHub Pages: it has no API to point at
+and no persistence behind it, and it must never be what `/var/www/cerebrumkit`
+serves. See `docs/DEMO.md`.
+
 ## systemd
 
 `/etc/systemd/system/cerebrumkit.service`:
