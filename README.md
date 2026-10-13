@@ -8,10 +8,14 @@
 [![Live demo](https://img.shields.io/badge/demo-live%20on%20Pages-4f46e5)](https://islomkhon.github.io/CerebrumKit/)
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/islomkhon/CerebrumKit)
 
-A starting point for agentic projects. You get an admin panel where agents are
-built out of **skills** and **tools**, a storage library of business tables you
-can hand those agents, and a client panel where the people the project is for
-talk to them.
+**A self-hosted scaffold for agentic projects: agents, skills and tools are rows
+in your own database, so the people who own a process change them from the panel
+instead of waiting on a deploy.** If that is the part you keep rebuilding, a star
+helps the next person find it.
+
+Concretely, you get an admin panel where agents are built out of **skills** and
+**tools**, a storage library of business tables you can hand those agents, and a
+client panel where the people the project is for talk to them.
 
 Nothing in here belongs to any particular business: no catalogue, no orders, no
 product tables. What is here is the machinery every such project needs, so a new
